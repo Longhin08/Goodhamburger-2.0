@@ -1,0 +1,11 @@
+﻿using GoodHamburgerAdmin.Domain;
+
+namespace GoodHamburgerAdmin.Infrastructure;
+
+public interface IClienteRepository
+{
+    Task<Cliente?> GetByIdAsync(int id);
+    Task<List<Cliente>> GetAllAsync();
+    Task AddAsync(Cliente cliente);
+    Task SaveChangesAsync();
+}
