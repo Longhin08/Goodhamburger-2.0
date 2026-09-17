@@ -23,4 +23,33 @@ public class ClienteService : IClienteService
         await _clienteRepository.SaveChangesAsync();
         return cliente;
     }
+    public async Task<bool> AtualizarClienteAsync(int id, Cliente clienteAtualizado)
+    {
+        var cliente = await _clienteRepository.GetByIdAsync(id);
+
+        if (cliente is null)
+            return false;
+
+        cliente.Nome = clienteAtualizado.Nome;
+        cliente.Email = clienteAtualizado.Email;
+
+        _clienteRepository.Update(cliente);
+        await _clienteRepository.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> DeletarClienteAsync(int id)
+    {
+        var cliente = await _clienteRepository.GetByIdAsync(id);
+
+        if (cliente is null)
+            return false;
+
+        _clienteRepository.Delete(cliente);
+        await _clienteRepository.SaveChangesAsync();
+
+        return true;
+    }
+
 }

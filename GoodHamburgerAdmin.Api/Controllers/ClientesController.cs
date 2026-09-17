@@ -1,12 +1,14 @@
 ﻿// ClientesController.cs
-using Microsoft.AspNetCore.Mvc;
 using GoodHamburgerAdmin.Domain;
 using GoodHamburgerAdmin.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GoodHamburgerAdmin.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ClientesController : ControllerBase
 {
     private readonly IClienteService _clienteService;
@@ -35,9 +37,33 @@ public class ClientesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Cliente cliente)
+    public async Task<IActionResult> Cre8ate([FromBody] Cliente cliente)
     {
         var criado = await _clienteService.CriarClienteAsync(cliente);
         return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
+    }
+
+    [HttpPut("{id}")]
+
+    public async Task<IActionResult> Update(int id, [FromBody] Cliente cliente)
+    {
+        var atualizado = await _clienteService.AtualizarClienteAsync(id, cliente);
+
+        if (!atualizado)
+            return NotFound();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+ 
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deletado = await _clienteService.DeletarClienteAsync(id);
+
+        if (!deletado)
+            return NotFound();
+
+        return NoContent();
     }
 }

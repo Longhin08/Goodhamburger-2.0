@@ -23,4 +23,9 @@ public class ClienteRepository : IClienteRepository
 
     public async Task SaveChangesAsync() =>
         await _context.SaveChangesAsync();
+    public void Update(Cliente cliente) =>
+    _context.Clientes.Update(cliente);
+
+    public void Delete(Cliente cliente) =>
+        _context.Clientes.Remove(cliente);
 }
